@@ -1,0 +1,7 @@
+services:
+  mefrp:
+    restart: always
+    container_name: mefrp
+    network_mode: host
+    command: ${start_cmd}
+    image: mefrp/core-next:latest

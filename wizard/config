@@ -1,0 +1,16 @@
+[
+  {
+    "stepTitle": "修改启动参数",
+    "items": [
+      {
+        "type": "text",
+        "field": "start_config",
+        "label": "启动配置",
+        "initValue": "-t 你的token -p 你的隧道id",
+        "rules": [
+          {"required": true, "message": "配置不能为空"}
+        ]
+      }
+    ]
+  }
+]
