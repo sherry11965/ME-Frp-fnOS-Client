@@ -1,15 +1,14 @@
-appname=mefrp
-version=1.0.15
-display_name=ME frp内网穿透
-desc=幻缘映射飞牛fnos启动器，您需要先前往官网创建隧道后，复制启动命令填写到安装向导中<a href="https://magicedge.feishu.cn/share/base/form/shrcndMe3AIHvbEXxxG11SuHw3g">点击这里提交问题反馈</a>  <a href="https://www.mefrp.com/docs/usage/fnnas">使用方法点这</a>  <a href="https://www.mefrp.com/">官网链接点这</a>
-arch=x86_64
-source=thirdparty
-
-maintainer=幻缘网络
-maintainer_url=https://www.mefrp.com/
-distributor=sherry
-distributor_url=https://club.fnnas.com/home.php?mod=space&uid=16443
-
-os_min_version=1.1.4
-
-changelog=1.提高最低系统要求 2.更新应用logo 3.提高稳定性
+appname         = mefrp
+version         = 1.0.26-1.15
+display_name    = ME frp内网穿透
+desc            = 幻缘映射飞牛fnos启动器，您需要先前往官网创建隧道后，复制启动命令填写到安装向导中<a href="https://magicedge.feishu.cn/share/base/form/shrcndMe3AIHvbEXxxG11SuHw3g">点击这里提交问题反馈</a>  <a href="https://www.mefrp.com/docs/usage/fnnas">使用方法点这</a>  <a href="https://www.mefrp.com/">官网链接点这</a>
+platform        =x86
+source          = thirdparty
+maintainer      = 幻缘网络
+maintainer_url  = https://www.mefrp.com/
+distributor     = sherry
+distributor_url = https://club.fnnas.com/home.php?mod=space&uid=16443
+os_min_version  = 1.1.8
+changelog       = 1.修复已知的配置向导bug <br> 2.提高系统安装要求 <br> (ps:作者中考去了，这是六月前的最后一个版本更新)
+desktop_uidir   = 
+checksum        = 1849af81cf61cbe141d81cb545dd9428

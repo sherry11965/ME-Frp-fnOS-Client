@@ -1,5 +1,72 @@
 #!/bin/bash
 
-### This script is called after the user change environment variables in application setting page.
+### This script is called after the user changes environment variables in the application setting page.
+
+# 设置日志文件
+LOG_FILE="${TRIM_APPDEST}/config_callback.log"
+echo "=== $(date): config_callback started (Merged Logic) ===" >> "$LOG_FILE"
+
+# 获取 start_cmd 值
+START_CMD=""
+
+# 1. 尝试从环境变量获取 (fnOS 会将向导字段作为环境变量传入)
+if [ -n "$start_cmd" ]; then
+    START_CMD="$start_cmd"
+    echo "Got start_cmd from environment: $START_CMD" >> "$LOG_FILE"
+fi
+
+# 2. 如果环境变量为空，尝试从配置文件读取作为回退
+if [ -z "$START_CMD" ] && [ -n "$TRIM_APP_CONFIG_DIR" ]; then
+    ENV_FILE="$TRIM_APP_CONFIG_DIR/environment"
+    if [ -f "$ENV_FILE" ]; then
+        START_CMD=$(grep "^start_cmd=" "$ENV_FILE" | cut -d'=' -f2- | tr -d '"')
+        echo "Got start_cmd from config file: $START_CMD" >> "$LOG_FILE"
+    fi
+fi
+
+# 如果获取到了启动命令，执行更新流程
+if [ -n "$START_CMD" ]; then
+    COMPOSE_FILE="${TRIM_APPDEST}/docker/docker-compose.yaml"
+    
+    # 步骤 1: 更新启动命令 (生成新的 docker-compose.yaml)
+    echo "Step 1: Updating docker-compose.yaml with new command..." >> "$LOG_FILE"
+    
+    # 备份旧文件
+    if [ -f "$COMPOSE_FILE" ]; then
+        cp "$COMPOSE_FILE" "$COMPOSE_FILE.backup.$(date +%s)"
+    fi
+
+    cat > "$COMPOSE_FILE" << EOF
+services:
+  my-app:
+    restart: always
+    container_name: mefrp
+    network_mode: host
+    command: "$START_CMD"
+    image: mefrp/core-next:latest
+EOF
+
+    cd "${TRIM_APPDEST}/docker"
+
+    # 步骤 2: 删除容器
+    echo "Step 2: Deleting existing containers (docker-compose down)..." >> "$LOG_FILE"
+    docker-compose down --remove-orphans >> "$LOG_FILE" 2>&1
+
+    # 步骤 3: 重新拉取并启动
+    echo "Step 3: Pulling latest image and starting (docker-compose pull && up)..." >> "$LOG_FILE"
+    docker-compose pull my-app >> "$LOG_FILE" 2>&1
+    docker-compose up -d my-app >> "$LOG_FILE" 2>&1
+
+    if [ $? -eq 0 ]; then
+        echo "SUCCESS: Configuration applied, containers deleted and re-pulled." >> "$LOG_FILE"
+    else
+        echo "ERROR: Failed to complete the update flow." >> "$LOG_FILE"
+    fi
+else
+    echo "WARNING: No start_cmd found, skipping update." >> "$LOG_FILE"
+fi
+
+echo "=== $(date): config_callback finished ===" >> "$LOG_FILE"
+echo "" >> "$LOG_FILE"
 
 exit 0

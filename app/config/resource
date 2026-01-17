@@ -1,10 +1,11 @@
 {
-    "docker-project": {
-        "projects": [
+    "docker-project":
+    {
+        "projects":
+        [
             {
                 "name": "my-app",
                 "path": "docker"
             }
         ]
     }
-}

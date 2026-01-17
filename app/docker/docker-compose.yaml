@@ -1,5 +1,5 @@
 services:
-  mefrp:
+  my-app:
     restart: always
     container_name: mefrp
     network_mode: host

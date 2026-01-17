@@ -2,4 +2,25 @@
 
 ### This script is called before the user change environment variables in application setting page.
 
+# 确保环境变量正确加载
+if [ -n "$TRIM_APP_CONFIG_DIR" ]; then
+    ENV_FILE="$TRIM_APP_CONFIG_DIR/environment"
+    if [ -f "$ENV_FILE" ]; then
+        # 导出环境变量，确保后续脚本可以访问
+        set -a
+        source "$ENV_FILE"
+        set +a
+    fi
+fi
+
+# 如果环境文件不存在，尝试从其他位置加载
+if [ -z "$start_cmd" ] && [ -n "$TRIM_APPDEST" ]; then
+    ENV_FILE="$TRIM_APPDEST/../environment"
+    if [ -f "$ENV_FILE" ]; then
+        set -a
+        source "$ENV_FILE"
+        set +a
+    fi
+fi
+
 exit 0

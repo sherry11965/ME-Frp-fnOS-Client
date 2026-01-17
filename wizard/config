@@ -3,12 +3,17 @@
     "stepTitle": "修改启动参数",
     "items": [
       {
+        "type": "tips",
+        "helpText": "更改后，请前往docker-compose界面关闭\"my-app\"项目并重新构建"
+      },
+      {
         "type": "text",
-        "field": "start_config",
-        "label": "启动配置",
-        "initValue": "-t 你的token -p 你的隧道id",
+        "field": "start_cmd",
+        "label": "启动命令",
+        "initValue": "start_cmd",
         "rules": [
-          {"required": true, "message": "配置不能为空"}
+          { "required": true, "message": "请输入启动命令" },
+          { "pattern": "^-t\\s+\\S+\\s+-p\\s+\\S+$", "message": "格式：-t xxx -p yyy" }
         ]
       }
     ]

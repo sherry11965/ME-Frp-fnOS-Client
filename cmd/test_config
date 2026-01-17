@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# 测试脚本 - 用于验证配置更新机制
+
+echo "=== 配置更新测试 ==="
+echo "TRIM_APPDEST: $TRIM_APPDEST"
+echo "TRIM_APP_CONFIG_DIR: $TRIM_APP_CONFIG_DIR"
+echo "start_cmd: $start_cmd"
+
+# 检查docker-compose文件
+COMPOSE_FILE="${TRIM_APPDEST}/docker/docker-compose.yaml"
+echo "Compose file: $COMPOSE_FILE"
+
+if [ -f "$COMPOSE_FILE" ]; then
+    echo "当前内容:"
+    cat "$COMPOSE_FILE"
+    echo ""
+    echo "Command行:"
+    grep "command:" "$COMPOSE_FILE"
+else
+    echo "错误: docker-compose.yaml文件不存在"
+fi
+
+echo ""
+echo "=== 测试完成 ==="
